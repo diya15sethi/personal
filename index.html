@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Diya Sethi · L'Oréal Professionnel</title>
+<meta name="description" content="Diya Sethi, Mumbai. Engineer-turned-MBA at XLRI. Aerialist, climber, consumer-behaviour obsessive." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600;700&family=Italiana&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<style>
+  :root {
+    /* Brighter, higher-contrast gold palette */
+    --gold: #EACB78;
+    --gold-bright: #F5D98A;
+    --gold-soft: #F8E5B0;
+    --gold-deep: #B08C4A;
+    --ink: #0A0A0A;
+    --paper: #F7F4EE;
+    --smoke: #141414;
+    --red: #B22B2B;
+  }
+  * { -webkit-font-smoothing: antialiased; }
+  html, body {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+  .display { font-family: 'Cormorant Garamond', serif; font-weight: 300; letter-spacing: 0.02em; }
+  .display-italic { font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300; }
+  .wordmark { font-family: 'Italiana', serif; letter-spacing: 0.35em; }
+  /* Bigger, higher-weight labels for legibility */
+  .label { font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.35em; text-transform: uppercase; font-weight: 600; }
+  .label-sm { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 600; }
+  .gold { color: var(--gold-bright); }
+  .bg-gold { background: var(--gold-bright); }
+  .grain::before {
+    content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 200;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/></svg>");
+    opacity: 0.06; mix-blend-mode: overlay;
+  }
+
+  .cursor { position: fixed; width: 8px; height: 8px; border-radius: 50%; background: var(--gold-bright); pointer-events: none; z-index: 9999; mix-blend-mode: difference; transition: transform 0.15s ease, width 0.2s, height 0.2s; }
+  .cursor.hover { width: 44px; height: 44px; background: transparent; border: 1px solid var(--gold-bright); }
+
+  #preloader { position: fixed; inset: 0; background: var(--ink); z-index: 1000; display: flex; align-items: center; justify-content: center; }
+  .loader-bar { width: 200px; height: 1px; background: rgba(234,203,120,0.25); position: relative; overflow: hidden; }
+  .loader-bar::after { content: ''; position: absolute; inset: 0; background: var(--gold-bright); transform-origin: left; animation: fill 1.8s cubic-bezier(.7,0,.3,1) forwards; }
+  @keyframes fill { 0% { transform: scaleX(0);} 100% { transform: scaleX(1);} }
+
+  .shimmer {
+    background: linear-gradient(90deg, var(--gold-deep), var(--gold-soft), var(--gold-bright), var(--gold-soft), var(--gold-deep));
+    background-size: 200% 100%;
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: shimmer 5s linear infinite;
+  }
+  @keyframes shimmer { 0%{background-position:0% 50%} 100%{background-position:200% 50%} }
+
+  .fullbleed { position: relative; height: 100vh; overflow: hidden; }
+  .section { position: relative; padding: 8vh 5vw; }
+  .kenburns img { animation: kenburns 22s ease-in-out infinite alternate; }
+  @keyframes kenburns { 0%{transform:scale(1) translate(0,0);} 100%{transform:scale(1.14) translate(-2%,-2%);} }
+
+  .chapter-num { position: absolute; top: 5vh; left: 5vw; font-family: 'Italiana', serif; font-size: 0.85rem; letter-spacing: 0.5em; color: var(--gold-bright); z-index: 5; }
+  .gold-line { display: inline-block; width: 60px; height: 1px; background: var(--gold-bright); vertical-align: middle; margin-right: 16px; }
+
+  .tilt-l { transform: rotate(-3deg); }
+  .tilt-r { transform: rotate(3deg); }
+  .tilt-ll { transform: rotate(-6deg); }
+  .tilt-rr { transform: rotate(6deg); }
+  .frame { position: relative; padding: 8px; background: var(--paper); box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
+  .frame-gold { padding: 6px; background: linear-gradient(135deg, var(--gold-deep), var(--gold-bright), var(--gold-deep)); }
+
+  .hotspot { position: absolute; width: 32px; height: 32px; cursor: pointer; z-index: 20; }
+  .hotspot::before { content: ''; position: absolute; inset: 0; border-radius: 50%; border: 1px solid var(--gold-bright); animation: pulse 2.5s ease-out infinite; }
+  .hotspot::after {
+    content: '+'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    color: var(--gold-bright); font-size: 18px; font-weight: 300;
+    background: rgba(0,0,0,0.7); border: 1px solid var(--gold-bright); border-radius: 50%;
+    transition: transform 0.3s ease;
+  }
+  .hotspot:hover::after { transform: rotate(90deg); background: var(--gold-bright); color: var(--ink); }
+  @keyframes pulse { 0%{transform:scale(1); opacity:.9;} 100%{transform:scale(2.4); opacity:0;} }
+  @keyframes soundpulse {
+    0%   { box-shadow: 0 10px 40px rgba(234,203,120,0.55), 0 0 0 0 rgba(234,203,120,0.85); }
+    70%  { box-shadow: 0 10px 40px rgba(234,203,120,0.55), 0 0 0 24px rgba(234,203,120,0);   }
+    100% { box-shadow: 0 10px 40px rgba(234,203,120,0.55), 0 0 0 0 rgba(234,203,120,0);     }
+  }
+  #unmuteBtn:hover { transform: translateX(-50%) scale(1.05); }
+
+  .fact-modal { position: fixed; inset: 0; z-index: 500; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.88); backdrop-filter: blur(10px); padding: 20px; }
+  .fact-modal.open { display: flex; }
+  .fact-card { max-width: 560px; padding: 60px 50px; background: var(--smoke); border: 1px solid rgba(234,203,120,0.4); position: relative; }
+  .fact-close { position: absolute; top: 20px; right: 24px; color: var(--gold-bright); font-size: 26px; cursor: pointer; line-height: 1; }
+
+  .mood-btn { padding: 12px 22px; border: 1px solid rgba(234,203,120,0.5); font-family: 'Italiana', serif; letter-spacing: 0.35em; font-size: 11px; color: var(--gold-bright); background: transparent; transition: all 0.4s ease; cursor: pointer; font-weight: 500; }
+  .mood-btn:hover, .mood-btn.active { background: var(--gold-bright); color: var(--ink); }
+  .gallery-tile { transition: filter 0.6s ease, transform 0.8s ease; }
+  .gallery-tile.dim { filter: grayscale(0.7) brightness(0.5); }
+
+  /* Constellation, MUCH more legible */
+  .constellation { position: relative; width: 100%; max-width: 900px; aspect-ratio: 16/10; margin: 0 auto; }
+  .star {
+    position: absolute; width: 18px; height: 18px; border-radius: 50%;
+    background: var(--gold-bright);
+    box-shadow: 0 0 24px var(--gold-bright), 0 0 48px rgba(234,203,120,0.6);
+    cursor: pointer; transform: translate(-50%, -50%);
+    transition: all 0.4s ease; z-index: 5;
+  }
+  .star-label {
+    position: absolute; top: 26px; left: 50%; transform: translateX(-50%);
+    font-family: 'Italiana', serif; font-size: 13px; letter-spacing: 0.35em;
+    color: var(--gold-bright); white-space: nowrap;
+    opacity: 1; font-weight: 500;
+    text-shadow: 0 0 8px rgba(0,0,0,0.9);
+    pointer-events: none;
+  }
+  .star-hint {
+    position: absolute; top: 46px; left: 50%; transform: translateX(-50%);
+    font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.3em;
+    color: rgba(255,255,255,0.55); white-space: nowrap;
+    text-transform: uppercase; pointer-events: none;
+  }
+  .star:hover { transform: translate(-50%,-50%) scale(1.5); }
+  .constellation-svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+
+  .marquee { display: flex; overflow: hidden; white-space: nowrap; border-top: 1px solid rgba(234,203,120,0.3); border-bottom: 1px solid rgba(234,203,120,0.3); padding: 18px 0; background: var(--ink); }
+  .marquee-track { display: inline-flex; animation: scroll 35s linear infinite; }
+  .marquee-item { padding: 0 40px; font-family: 'Italiana', serif; letter-spacing: 0.4em; font-size: 14px; color: var(--gold-bright); font-weight: 500; }
+  .marquee-item span { color: rgba(247,244,238,0.4); margin-left: 40px; }
+  @keyframes scroll { 0%{transform:translateX(0);} 100%{transform:translateX(-50%);} }
+
+  .mega { font-family: 'Cormorant Garamond', serif; font-weight: 300; letter-spacing: -0.02em; line-height: 0.85; }
+  .card { border: 1px solid rgba(234,203,120,0.3); padding: 32px; background: linear-gradient(180deg, rgba(234,203,120,0.04), transparent); }
+
+  nav.top { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 22px 5vw; display: flex; justify-content: space-between; align-items: center; mix-blend-mode: difference; }
+  nav.top .brand { font-family: 'Italiana', serif; letter-spacing: 0.4em; font-size: 13px; color: #fff; font-weight: 500; }
+  nav.top .cta { font-size: 11px; letter-spacing: 0.35em; text-transform: uppercase; color: #fff; font-weight: 500; }
+
+  .max-content { max-width: 1400px; margin: 0 auto; }
+  #progress { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--gold-bright); z-index: 300; }
+
+  .sticker { display: inline-block; background: var(--gold-bright); color: var(--ink); padding: 5px 14px; font-family: 'Italiana', serif; letter-spacing: 0.3em; font-size: 11px; transform: rotate(-2deg); font-weight: 500; }
+  .sticker-red { background: var(--red); color: #fff; }
+
+  .torn { height: 2px; background: linear-gradient(90deg, transparent, var(--gold-bright), transparent); margin: 32px auto; max-width: 300px; }
+
+  /* Big quote treatment */
+  .quote-big {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.25;
+    color: #fff;
+  }
+  .quote-big .accent { color: var(--gold-bright); font-style: italic; }
+
+  /* Finale text improvements */
+  .finale-name {
+    font-family: 'Italiana', serif;
+    letter-spacing: 0.4em;
+    color: #fff;
+    font-weight: 500;
+  }
+
+  @media (max-width: 768px) {
+    body { cursor: auto; }
+    .cursor { display: none; }
+    .section { padding: 6vh 6vw; }
+    .fact-card { padding: 40px 28px; }
+    .mega { line-height: 0.9; }
+    .star-label { font-size: 11px; }
+  }
+</style>
+</head>
+<body class="grain">
+
+<div id="progress"></div>
+<div class="cursor" id="cursor"></div>
+
+<div id="preloader">
+  <div class="text-center">
+    <div class="wordmark text-white mb-6" style="font-size: 1.1rem;">L'ORÉAL <span class="gold">PROFESSIONNEL</span></div>
+    <div class="loader-bar mx-auto"></div>
+    <div class="label mt-6 gold opacity-80">DIYA · SETHI · MUMBAI</div>
+  </div>
+</div>
+
+<nav class="top">
+  <div class="brand">L'ORÉAL <span class="gold">PROFESSIONNEL</span></div>
+  <div class="cta gold hidden md:block">The Next Face · Diya Sethi</div>
+</nav>
+
+<!-- ================================================== -->
+<!-- HERO, video =====================================  -->
+<!-- ================================================== -->
+<section class="fullbleed" id="hero">
+  <div class="absolute inset-0">
+    <video id="heroVideo" src="videos/hero.mp4" autoplay loop muted playsinline class="w-full h-full object-cover" style="filter: brightness(0.6) contrast(1.05);"></video>
+  </div>
+  <!-- Unmute button, bigger, brighter, pulsing (audio needs user gesture per browser policy) -->
+  <button id="unmuteBtn" class="absolute z-30 flex items-center gap-3" style="bottom: 40px; left: 50%; transform: translateX(-50%); background: var(--gold-bright); border: 2px solid var(--gold-bright); color: #0a0a0a; padding: 16px 28px; font-family: 'Italiana', serif; letter-spacing: 0.4em; font-size: 13px; font-weight: 600; cursor: pointer; box-shadow: 0 10px 40px rgba(234,203,120,0.55), 0 0 0 0 rgba(234,203,120,0.7); transition: all 0.3s ease; animation: soundpulse 2s ease-out infinite; border-radius: 999px;">
+    <svg id="unmuteIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+    <span id="unmuteText">TAP FOR SOUND</span>
+  </button>
+  <div class="absolute inset-0" style="background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, transparent 25%, transparent 55%, rgba(0,0,0,0.92) 100%);"></div>
+
+  <div class="relative z-10 h-full flex flex-col justify-between max-content" style="padding: 12vh 0 6vh;">
+    <div class="hero-top">
+      <div class="label gold reveal-line"><span class="gold-line"></span>MUMBAI · L'ORÉAL PROFESSIONNEL</div>
+    </div>
+
+    <div class="hero-name">
+      <h1 class="mega text-white" style="font-size: clamp(4rem, 16vw, 14rem);">
+        <span class="block hero-word">Diya</span>
+        <span class="block display-italic gold hero-word" style="margin-left: 8%;">Sethi.</span>
+      </h1>
+    </div>
+
+    <div class="flex justify-between items-end flex-wrap gap-6">
+      <div class="max-w-md">
+        <div class="label gold mb-3">01 · ARRIVAL</div>
+        <div class="display text-white" style="font-size: 1.2rem; line-height: 1.5;">
+          Engineer turned <span class="gold">MBA candidate at XLRI Delhi.</span> Aerialist. Climber. A curious eye trained on why people buy what they buy, and love what they love.
+        </div>
+      </div>
+      <div class="hidden md:block text-right">
+        <div class="label gold mb-2">SCROLL</div>
+        <div class="w-px h-16 bg-gradient-to-b from-[color:var(--gold-bright)] to-transparent ml-auto"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee">
+  <div class="marquee-track">
+    <div class="marquee-item">L'ORÉAL PROFESSIONNEL<span>·</span></div>
+    <div class="marquee-item">DIYA SETHI<span>·</span></div>
+    <div class="marquee-item">MUMBAI · XLRI DELHI<span>·</span></div>
+    <div class="marquee-item">BECAUSE YOU'RE WORTH IT<span>·</span></div>
+    <div class="marquee-item">THE NEXT FACE<span>·</span></div>
+    <div class="marquee-item">L'ORÉAL PROFESSIONNEL<span>·</span></div>
+    <div class="marquee-item">DIYA SETHI<span>·</span></div>
+    <div class="marquee-item">MUMBAI · XLRI DELHI<span>·</span></div>
+    <div class="marquee-item">BECAUSE YOU'RE WORTH IT<span>·</span></div>
+    <div class="marquee-item">THE NEXT FACE<span>·</span></div>
+  </div>
+</div>
+
+<!-- ================================================== -->
+<!-- CH 02, CONSTELLATION (fixed legibility) =========== -->
+<!-- ================================================== -->
+<section class="section relative" id="constellation" style="background: radial-gradient(ellipse at center, #0d0d10 0%, #050505 100%);">
+  <div class="chapter-num">02 · CONSTELLATION</div>
+
+  <div class="max-content">
+    <div class="text-center mb-10">
+      <div class="label gold mb-3"><span class="gold-line"></span>02<span class="gold-line ml-4"></span></div>
+      <h2 class="mega text-white" style="font-size: clamp(2.5rem, 7vw, 6rem);">
+        A self is a <span class="display-italic gold">constellation.</span>
+      </h2>
+      <p class="mt-4 text-white/80" style="font-size: 14px; font-weight: 500;">TAP A STAR TO REVEAL</p>
+    </div>
+
+    <div class="constellation">
+      <svg class="constellation-svg" viewBox="0 0 900 560">
+        <defs>
+          <linearGradient id="gold-line-grad" x1="0" x2="1">
+            <stop offset="0" stop-color="#B08C4A" stop-opacity="0"/>
+            <stop offset="0.5" stop-color="#EACB78" stop-opacity="0.8"/>
+            <stop offset="1" stop-color="#B08C4A" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <g stroke="url(#gold-line-grad)" stroke-width="0.8" fill="none">
+          <line x1="150" y1="120" x2="380" y2="80"/>
+          <line x1="380" y1="80" x2="580" y2="200"/>
+          <line x1="580" y1="200" x2="750" y2="120"/>
+          <line x1="580" y1="200" x2="480" y2="380"/>
+          <line x1="480" y1="380" x2="260" y2="440"/>
+          <line x1="260" y1="440" x2="150" y2="120"/>
+                            </g>
+      </svg>
+
+      <div class="star" style="top: 21.4%; left: 16.7%;" data-scroll="mane">
+        <div class="star-label">HAIR</div>
+        <div class="star-hint">tap</div>
+      </div>
+      <div class="star" style="top: 14.3%; left: 42.2%;" data-scroll="adventure">
+        <div class="star-label">AERIAL</div>
+        <div class="star-hint">tap</div>
+      </div>
+      <div class="star" style="top: 35.7%; left: 64.4%;" data-scroll="mind">
+        <div class="star-label">MIND</div>
+        <div class="star-hint">tap</div>
+      </div>
+      <div class="star" style="top: 21.4%; left: 83.3%;" data-scroll="about">
+        <div class="star-label">XLRI</div>
+        <div class="star-hint">tap</div>
+      </div>
+      <div class="star" style="top: 67.9%; left: 53.3%;" data-scroll="adventure">
+        <div class="star-label">YOGA</div>
+        <div class="star-hint">tap</div>
+      </div>
+      <div class="star" style="top: 78.6%; left: 28.9%;" data-scroll="adventure">
+        <div class="star-label">CLIMB</div>
+        <div class="star-hint">tap</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================== -->
+<!-- CH 03, ABOUT ====================================== -->
+<!-- ================================================== -->
+<section class="section relative" id="about" style="background: var(--ink);">
+  <div class="chapter-num">03 · WHO</div>
+
+  <div class="max-content grid md:grid-cols-12 gap-10 items-center">
+    <div class="md:col-span-5 relative">
+      <div class="frame tilt-l">
+        <img src="images/portrait-black-lace.png" alt="" class="w-full block" style="aspect-ratio: 3/4; object-fit: cover; object-position: center 20%;"/>
+      </div>
+      <div class="absolute top-4 -right-2 sticker">XLRI · MBA</div>
+    </div>
+
+    <div class="md:col-span-7">
+      <div class="label gold mb-4"><span class="gold-line"></span>03 · ABOUT ME</div>
+      <h2 class="mega text-white" style="font-size: clamp(2.8rem, 6vw, 5rem);">
+        A curious <span class="display-italic gold">contradiction.</span>
+      </h2>
+
+      <p class="mt-8 text-white" style="font-size: 17px; line-height: 1.85; opacity: 0.92;">
+        I built software before I built strategy. Trained as an <span class="gold">IT engineer</span>, now pursuing my <span class="gold">MBA at XLRI Delhi</span>, where I've fallen head-first into <span class="display-italic gold">consumer psychology</span> and <span class="display-italic gold">behavioural science.</span>
+      </p>
+      <p class="mt-4 text-white/85 max-w-xl" style="font-size: 15px; line-height: 1.85;">
+        Off the desk: aerial silks &amp; hoops, bouldering, yoga, and a journal I actually finish. On the desk: <span class="gold">Kahneman</span>, cognitive neuroscience, and the endless <span class="display-italic gold">why</span> behind every buyer decision.
+      </p>
+
+      <div class="mt-8 grid grid-cols-3 gap-4 max-w-lg">
+        <div class="card">
+          <div class="label-sm gold">BASED</div>
+          <div class="display-italic text-white mt-2" style="font-size: 16px;">Mumbai</div>
+        </div>
+        <div class="card">
+          <div class="label-sm gold">READS</div>
+          <div class="display-italic text-white mt-2" style="font-size: 16px;">Kahneman</div>
+        </div>
+        <div class="card">
+          <div class="label-sm gold">STUDIES</div>
+          <div class="display-italic text-white mt-2" style="font-size: 16px;">Consumers</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================== -->
+<!-- CH 04, AERIAL / IN MOTION (climbing woven in) ==== -->
+<!-- ================================================== -->
+<section class="section relative overflow-hidden" id="adventure" style="background: #0a0a0a;">
+  <div class="chapter-num">04 · IN MOTION</div>
+
+  <div class="max-content">
+    <!-- Header row -->
+    <div class="grid md:grid-cols-12 gap-8 items-end mb-10">
+      <div class="md:col-span-8">
+        <div class="label gold mb-4"><span class="gold-line"></span>04 · IN MOTION</div>
+        <h2 class="mega text-white" style="font-size: clamp(2.8rem, 7.5vw, 6.5rem);">
+          The rules of gravity, <span class="display-italic gold">gently disobeyed.</span>
+        </h2>
+      </div>
+      <div class="md:col-span-4">
+        <p class="text-white/95 max-w-md" style="font-size: 16px; line-height: 1.85;">
+          Aerial <span class="gold">silks</span> &amp; <span class="gold">hoops</span> taught me weightlessness, the discipline of falling, and choosing not to.
+          <span class="gold">Bouldering</span> taught me the opposite: how to trust my own weight against a wall that will not move for me.
+          <br/><br/>Different vertical languages, <span class="display-italic gold">same vocabulary.</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- All 3 photos together, no gap -->
+    <div class="grid grid-cols-2 md:grid-cols-12 gap-4">
+      <div class="md:col-span-5 relative">
+        <div class="relative overflow-hidden" style="aspect-ratio: 3/4;">
+          <img src="images/silks-blue.jpg" alt="" class="w-full h-full object-cover parallax-img" />
+        </div>
+        <div class="absolute -bottom-3 left-4 sticker sticker-red">SILKS · SOLO</div>
+      </div>
+      <div class="md:col-span-4 relative mt-8 md:mt-0">
+        <div class="frame tilt-r">
+          <img src="images/silks-teal.jpg" alt="" class="w-full block" style="aspect-ratio: 3/4; object-fit: cover;"/>
+        </div>
+        <div class="absolute -top-3 -right-3 sticker">TEAL · DUO</div>
+      </div>
+      <div class="md:col-span-3 relative mt-8 md:mt-0">
+        <div class="frame tilt-l">
+          <img src="images/climbing.jpg" alt="" class="w-full block" style="aspect-ratio: 3/4; object-fit: cover;"/>
+        </div>
+        <div class="absolute -bottom-3 -left-3 sticker sticker-red">BOULDER · V4</div>
+      </div>
+    </div>
+
+    <!-- Discipline stickers row -->
+    <div class="mt-10 flex gap-3 flex-wrap justify-center">
+      <div class="sticker">SILKS</div>
+      <div class="sticker sticker-red">HOOPS</div>
+      <div class="sticker">BOULDER</div>
+      <div class="sticker sticker-red">YOGA</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================== -->
+<!-- CH 05, MIND / PSYCHOLOGY (moved up per request) === -->
+<!-- ================================================== -->
+<section class="section relative overflow-hidden" id="mind" style="background: #0a0a0a;">
+  <div class="chapter-num">05 · MIND</div>
+  <div class="absolute inset-0" style="background: radial-gradient(ellipse at 30% 20%, rgba(234,203,120,0.06), transparent 60%);"></div>
+
+  <div class="relative z-10 max-content">
+    <div class="text-center mb-12">
+      <div class="label gold mb-3"><span class="gold-line"></span>05 · PSYCHOLOGY · CONSUMER BEHAVIOUR<span class="gold-line ml-4"></span></div>
+      <h2 class="mega text-white" style="font-size: clamp(2.5rem, 6vw, 5.5rem);">
+        I love reading <span class="display-italic gold">philosophy</span> &amp; <span class="display-italic gold">psychology.</span>
+      </h2>
+    </div>
+
+    <!-- Books: 3 only -->
+    <div class="grid md:grid-cols-3 gap-8 mb-16">
+      <div class="relative">
+        <div class="frame tilt-l">
+          <img src="images/mood-books-shelf.png" alt="" class="w-full block" style="aspect-ratio: 3/4; object-fit: cover;"/>
+        </div>
+        <div class="absolute -bottom-3 -left-3 sticker">i · KAHNEMAN</div>
+      </div>
+      <div class="relative">
+        <div class="frame tilt-r">
+          <img src="images/mood-books-bed.png" alt="" class="w-full block" style="aspect-ratio: 3/4; object-fit: cover;"/>
+        </div>
+        <div class="absolute -top-3 right-4 sticker sticker-red">ii · TARTT</div>
+      </div>
+      <div class="card flex flex-col justify-center">
+        <div class="wordmark gold text-xs mb-3">iii · THE FIELD</div>
+        <div class="display text-white" style="font-size: 1.4rem; line-height: 1.35;">
+          Behavioural science. Philosophy. Buyer intention.
+        </div>
+        <div class="text-white/70 mt-4 text-sm display-italic" style="line-height: 1.7;">
+          The invisible architecture behind every decision, including which shampoo returns to your shelf, decade after decade.
+        </div>
+      </div>
+    </div>
+
+    <!-- Big quote replacing the intersection box -->
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="wordmark gold mb-6" style="font-size: 12px;">THE QUESTION I LIVE INSIDE</div>
+      <div class="quote-big" style="font-size: clamp(1.8rem, 3.6vw, 3rem);">
+        "Every purchase is a <span class="accent">vote for the person you believe you are.</span>
+        <br/>Every brand you keep on your shelf is a <span class="accent">quiet declaration.</span>"
+      </div>
+      <div class="mt-6 label gold">DIYA · ON THE INTERSECTION OF PSYCHOLOGY &amp; BRAND</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================================================== -->
+<!-- CH 06, L'ORÉAL PROFESSIONNEL ====================== -->
+<!-- ================================================== -->
+<section class="section relative overflow-hidden" id="loreal" style="background: linear-gradient(180deg, #0a0a0a 0%, #0d0d0d 100%);">
+  <div class="chapter-num">06 · L'ORÉAL PROFESSIONNEL</div>
+
+  <div class="max-content">
+    <div class="text-center mb-12">
+      <div class="label gold mb-3"><span class="gold-line"></span>06 · THE ONE BRAND I RELATE TO<span class="gold-line ml-4"></span></div>
+      <h2 class="mega text-white" style="font-size: clamp(3rem, 8vw, 7rem);">
+        L'Oréal <span class="display-italic gold">Professionnel.</span>
+      </h2>
+      <p class="mt-4 display-italic text-white/80" style="font-size: 17px;">
+        Because expertise, in any craft, is a form of care.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-12 gap-6 items-start">
+      <div class="md:col-span-5 relative">
+        <div class="frame tilt-r">
+          <img src="images/shampoo-ritual.jpg" alt="Xtenso Care" class="w-full block" style="aspect-ratio: 3/4; object-fit: cover;"/>
+        </div>
+        <div class="absolute -top-4 -left-4 sticker sticker-red">XTENSO CARE</div>
+      </div>
+
+      <div class="md:col-span-7">
+        <p class="text-white" style="font-size: 17px; line-height: 1.9; opacity: 0.92;">
+          I've used <span class="gold">Xtenso Care</span> for years. Then <span class="gold">Absolut Repair</span> found its way onto my shelf.
+          Then <span class="gold">Scalp Advanced.</span> What I love isn't the packaging, it's the <span class="display-italic gold">professional intelligence</span> in every formulation.
+        </p>
+        <p class="mt-4 text-white/85" style="font-size: 15px; line-height: 1.85;">
+          L'Oréal Professionnel treats hair the way a good doctor treats a patient: specific, informed, never one-size-fits-all. As both an engineer and a consumer-behaviour student, I have deep respect for a brand that engineers the underlying <span class="gold">system</span>, not just the surface.
+        </p>
+
+        <div class="mt-8 relative">
+          <div class="frame tilt-ll inline-block" style="width: 45%;">
+            <img src="images/products-lineup.png" alt="" class="w-full block" style="aspect-ratio: 1; object-fit: cover;"/>
+          </div>
+          <div class="frame tilt-r inline-block" style="width: 45%; margin-left: 10%;">
+            <img src="images/mood-loreal-display.png" alt="" class="w-full block" style="aspect-ratio: 3/4; object-fit: cover;"/>
+            <div class="absolute -bottom-3 left-2 sticker">THE SHELF</div>
+          </div>
+        </div>
+
+        <div class="mt-8 grid grid-cols-3 gap-3">
+          <div class="card text-center">
+            <div class="wordmark gold text-xs">01</div>
+            <div class="display text-white mt-1" style="font-size: 16px;">Expertise</div>
+          </div>
+          <div class="card text-center">
+            <div class="wordmark gold text-xs">02</div>
+            <div class="display text-white mt-1" style="font-size: 16px;">Specificity</div>
+          </div>
+          <div class="card text-center">
+            <div class="wordmark gold text-xs">03</div>
+            <div class="display text-white mt-1" style="font-size: 16px;">Result</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="torn"></div>
+    <div class="text-center display-italic text-white/85" style="font-size: 16px;">
+      Xtenso Care · Absolut Repair · Scalp Advanced, <span class="gold">the shelf that does not change.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================== -->
+<!-- CH 07, THE MANE (added curly + venue photo) ======= -->
+<!-- ================================================== -->
+<section class="section relative" id="mane" style="background: var(--ink);">
+  <div class="chapter-num">07 · THE MANE</div>
+
+  <div class="max-content">
+    <div class="grid md:grid-cols-12 gap-8 items-center mb-10">
+      <div class="md:col-span-8">
+        <div class="label gold mb-3"><span class="gold-line"></span>07 · THE MANE</div>
+        <h2 class="mega text-white" style="font-size: clamp(2.5rem, 6.5vw, 5.5rem);">
+          Dressing up is my <span class="display-italic gold">happy place.</span>
+        </h2>
+        <p class="mt-4 text-white max-w-xl" style="font-size: 16px; line-height: 1.8; opacity: 0.95;">
+          I love changing it up, sleek one day, curls the next, jasmine tucked in for a wedding, an unfussy pony for a Monday morning.
+          Styling my hair isn't upkeep, <span class="gold">it's play.</span> A different mood, a different memoir, a different <span class="display-italic gold">version of me on stage.</span>
+        </p>
+      </div>
+      <div class="md:col-span-4 text-right">
+        <div class="text-white/70 text-xs display-italic mb-3">choose a mood</div>
+        <div class="flex flex-wrap gap-2 md:justify-end" id="moodSelector">
+          <button class="mood-btn active" data-mood="all">ALL</button>
+          <button class="mood-btn" data-mood="curly">CURLY</button>
+          <button class="mood-btn" data-mood="soft">SOFT</button>
+          <button class="mood-btn" data-mood="bold">BOLD</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-4" id="galleryGrid">
+      <div class="gallery-tile relative overflow-hidden frame tilt-l" data-mood="soft">
+        <img src="images/portrait-flowers.jpg" alt="" class="w-full block" style="aspect-ratio: 3/4; object-fit: cover;" />
+        <div class="absolute bottom-2 left-2 sticker">01 · JASMINE</div>
+      </div>
+      <div class="gallery-tile relative overflow-hidden frame tilt-r" data-mood="curly">
+        <img src="images/portrait-venue.jpg" alt="" class="w-full block" style="aspect-ratio: 3/4; object-fit: cover;" />
+        <div class="absolute bottom-2 left-2 sticker sticker-red">02 · CURLS</div>
+      </div>
+      <div class="gallery-tile relative overflow-hidden frame tilt-l" data-mood="soft">
+        <img src="images/portrait-mirror.jpg" alt="" class="w-full block" style="aspect-ratio: 3/4; object-fit: cover;" />
+        <div class="absolute bottom-2 left-2 sticker">03 · UNDONE</div>
+      </div>
+      <div class="gallery-tile relative overflow-hidden frame tilt-r" data-mood="bold">
+        <img src="images/portrait-blazer.jpg" alt="" class="w-full block" style="aspect-ratio: 3/4; object-fit: cover;" />
+        <div class="absolute bottom-2 left-2 sticker">04 · SLEEK</div>
+      </div>
+      <div class="gallery-tile relative overflow-hidden frame tilt-l" data-mood="bold">
+        <img src="images/portrait-gallery.jpg" alt="" class="w-full block" style="aspect-ratio: 3/4; object-fit: cover;" />
+        <div class="absolute bottom-2 left-2 sticker">05 · GALLERY</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================== -->
+<!-- CH 08, WHAT BEAUTY MEANS (L'Oréal-aligned) ======== -->
+<!-- ================================================== -->
+<section class="section relative" id="beauty" style="background: linear-gradient(180deg, var(--ink) 0%, #0d0d0d 100%);">
+  <div class="chapter-num">08 · BEAUTY</div>
+
+  <div class="max-content grid md:grid-cols-12 gap-12 items-center">
+    <div class="md:col-span-5 relative">
+      <div class="frame tilt-r">
+        <img src="images/mood-hair-collage.png" alt="" class="w-full block" style="aspect-ratio: 3/4; object-fit: cover;"/>
+      </div>
+      <div class="absolute -bottom-3 -left-3 sticker">BEAUTY · RITUAL</div>
+    </div>
+
+    <div class="md:col-span-7">
+      <div class="label gold mb-4"><span class="gold-line"></span>08 · WHAT BEAUTY MEANS TO ME</div>
+      <h2 class="mega text-white" style="font-size: clamp(2.2rem, 5vw, 4.2rem);">
+        Beauty is what <span class="display-italic gold">remains</span>
+        <br/>when the mirror is <span class="display-italic gold">put down.</span>
+      </h2>
+
+      <p class="mt-10 text-white" style="font-size: 17px; line-height: 1.9; opacity: 0.95;">
+        Beauty, for me, has never lived in the mirror. It lives in the <span class="gold">quality of my attention</span>, the care I give a friend at 2 a.m., the patience I bring to a book I don't yet understand, the honesty I owe myself on the days it would be easier to lie.
+        My hair, my skin, the clothes I choose, these are the medium. The message is <span class="display-italic gold">everything I have quietly become underneath.</span>
+      </p>
+
+      <p class="mt-5 text-white/95" style="font-size: 16px; line-height: 1.9;">
+        I don't think of beauty as decoration. I think of it as <span class="gold">declaration.</span> Every jasmine tucked into my hair, every silk I invert on, every book I finish, every Sunday I choose the long wash-day over the quick one, they are small refusals of the shortcut. They are how I say, without saying, <span class="display-italic gold">I am worth this time.</span>
+      </p>
+
+      <p class="mt-5 text-white/90" style="font-size: 15.5px; line-height: 1.85;">
+        Which is why "<span class="gold display-italic">Because you're worth it</span>" has never felt like a slogan to me. It's the sentence I've been telling myself, quietly, for years, before I had the language for self-worth, before I had the confidence to spend the extra minute on my own hair.
+        <span class="display-italic gold">Beauty is self-worth made visible, and worn like a signature.</span>
+      </p>
+
+      <p class="mt-8 quote-big" style="font-size: clamp(1.4rem, 2.6vw, 2rem);">
+        "The most beautiful thing about a woman is <span class="accent">the quality of her attention.</span>
+        Everything else is just the frame."
+      </p>
+      <div class="mt-4 label gold">A PERSONAL DEFINITION</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================== -->
+<!-- CH 09, STRENGTHS & GROWING EDGES ================== -->
+<!-- ================================================== -->
+<section class="section relative" id="portrait" style="background: linear-gradient(180deg, #0d0d0d 0%, var(--ink) 100%);">
+  <div class="chapter-num">09 · HONEST PORTRAIT</div>
+
+  <div class="max-content">
+    <div class="text-center mb-12">
+      <div class="label gold mb-3"><span class="gold-line"></span>09 · STRENGTHS · WEAKNESSES<span class="gold-line ml-4"></span></div>
+      <h2 class="mega text-white" style="font-size: clamp(2.5rem, 6vw, 5rem);">
+        The <span class="display-italic gold">honest</span> portrait.
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8">
+      <div class="card">
+        <div class="label gold mb-6">STRENGTHS</div>
+        <div class="space-y-5">
+          <div>
+            <div class="wordmark gold text-xs mb-1">01</div>
+            <div class="display text-white mb-1" style="font-size: 1.5rem;">Adaptability</div>
+            <div class="text-white/75 text-sm display-italic" style="line-height: 1.7;">
+              Software engineer one year, MBA student the next, aerialist every week, I move between worlds and pick up the language quickly.
+            </div>
+          </div>
+          <div>
+            <div class="wordmark gold text-xs mb-1">02</div>
+            <div class="display text-white mb-1" style="font-size: 1.5rem;">Critical thinking</div>
+            <div class="text-white/75 text-sm display-italic" style="line-height: 1.7;">
+              I don't take a claim, a product, or a decision at face value. I ask what's beneath it, trained by engineering, deepened by behavioural science.
+            </div>
+          </div>
+          <div>
+            <div class="wordmark gold text-xs mb-1">03</div>
+            <div class="display text-white mb-1" style="font-size: 1.5rem;">Empathy</div>
+            <div class="text-white/75 text-sm display-italic" style="line-height: 1.7;">
+              I notice the pause before someone speaks, the word they almost used. It's the reason I love consumer psychology and the reason people trust me quickly.
+            </div>
+          </div>
+          <div>
+            <div class="wordmark gold text-xs mb-1">04</div>
+            <div class="display text-white mb-1" style="font-size: 1.5rem;">A curious mind</div>
+            <div class="text-white/75 text-sm display-italic" style="line-height: 1.7;">
+              Why do brands feel like home? Why does a silk hold? Why do people vote against their own interest? Curiosity is the fuel, and the compass.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="border-color: rgba(234,203,120,0.5);">
+        <div class="label gold mb-6">GROWING EDGES</div>
+        <div class="space-y-5">
+          <div>
+            <div class="wordmark gold text-xs mb-1">01</div>
+            <div class="display text-white mb-1" style="font-size: 1.5rem;">Difficulty delegating</div>
+            <div class="text-white/75 text-sm display-italic" style="line-height: 1.7;">
+              I often want to do it myself, because I know exactly how I want it done. I'm learning that trust is a form of leadership too.
+            </div>
+          </div>
+          <div>
+            <div class="wordmark gold text-xs mb-1">02</div>
+            <div class="display text-white mb-1" style="font-size: 1.5rem;">Overly self-critical</div>
+            <div class="text-white/75 text-sm display-italic" style="line-height: 1.7;">
+              I hold myself to a very high standard, sometimes higher than the situation demands. I'm working on being my own kinder editor.
+            </div>
+          </div>
+          <div>
+            <div class="wordmark gold text-xs mb-1">03</div>
+            <div class="display text-white mb-1" style="font-size: 1.5rem;">Impulsive</div>
+            <div class="text-white/75 text-sm display-italic" style="line-height: 1.7;">
+              When something feels right, I want it now. Building the pause between instinct and action is a life-long practice.
+            </div>
+          </div>
+          <div class="pt-2">
+            <div class="display-italic text-white/85 text-sm" style="line-height: 1.7;">
+              "Honest about the edges, patient about the growth."
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================================================== -->
+<!-- FINALE ============================================= -->
+<!-- ================================================== -->
+<section class="fullbleed relative" id="finale" style="background: #050505;">
+  <div class="absolute inset-0 flex items-center justify-center">
+    <svg viewBox="0 0 1200 800" class="w-full h-full opacity-40">
+      <defs>
+        <linearGradient id="fin-grad" x1="0" x2="1">
+          <stop offset="0" stop-color="#B08C4A" stop-opacity="0"/>
+          <stop offset="0.5" stop-color="#EACB78" stop-opacity="0.5"/>
+          <stop offset="1" stop-color="#B08C4A" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <circle cx="600" cy="400" r="300" stroke="url(#fin-grad)" fill="none" stroke-width="0.6"/>
+      <circle cx="600" cy="400" r="200" stroke="url(#fin-grad)" fill="none" stroke-width="0.6"/>
+      <circle cx="600" cy="400" r="100" stroke="url(#fin-grad)" fill="none" stroke-width="0.6"/>
+    </svg>
+  </div>
+
+  <div class="relative z-10 h-full flex flex-col items-center justify-center text-center max-content px-6">
+    <div class="label gold mb-8"><span class="gold-line"></span>FINALE<span class="gold-line ml-4"></span></div>
+    <h2 class="mega text-white" style="font-size: clamp(3rem, 11vw, 10rem);">
+      Because <span class="shimmer display-italic">you're worth it.</span>
+    </h2>
+    <div class="mt-12 finale-name" style="font-size: 1.5rem;">DIYA SETHI</div>
+    <div class="mt-4 label gold">MUMBAI · XLRI DELHI · L'ORÉAL PROFESSIONNEL</div>
+    <div class="mt-14 display-italic text-white" style="font-size: clamp(1.4rem, 2.5vw, 1.9rem); opacity: 0.95;">
+     With all of me, <span class="gold" style="font-weight: 400;">Diya Sethi.</span>
+    </div>
+  </div>
+</section>
+
+<div class="marquee">
+  <div class="marquee-track">
+    <div class="marquee-item">L'ORÉAL PROFESSIONNEL<span>·</span></div>
+    <div class="marquee-item">MUMBAI · XLRI DELHI<span>·</span></div>
+    <div class="marquee-item">BECAUSE YOU'RE WORTH IT<span>·</span></div>
+    <div class="marquee-item">DIYA SETHI<span>·</span></div>
+    <div class="marquee-item">L'ORÉAL PROFESSIONNEL<span>·</span></div>
+    <div class="marquee-item">MUMBAI · XLRI DELHI<span>·</span></div>
+    <div class="marquee-item">BECAUSE YOU'RE WORTH IT<span>·</span></div>
+    <div class="marquee-item">DIYA SETHI<span>·</span></div>
+  </div>
+</div>
+
+<div class="fact-modal" id="factModal">
+  <div class="fact-card">
+    <div class="fact-close" id="factClose">×</div>
+    <div class="label gold mb-4" id="factLabel">FACT</div>
+    <div class="display text-white leading-tight mb-6" id="factTitle" style="font-size: 2rem;">A private detail</div>
+    <div class="display-italic text-white/85" id="factBody" style="font-size: 16px; line-height: 1.8;">Placeholder.</div>
+    <div class="mt-8 flex items-center gap-3">
+      <div class="w-8 h-px bg-[color:var(--gold-bright)]"></div>
+      <div class="label gold text-[11px]" id="factTag">DIYA · SETHI</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  if (window.matchMedia('(pointer: fine)').matches) {
+    document.addEventListener('mousemove', (e) => {
+      gsap.to(cursor, { x: e.clientX - 4, y: e.clientY - 4, duration: 0.15, ease: 'power2.out' });
+    });
+    document.querySelectorAll('a, button.hotspot.star.mood-btn.gallery-tile.frame').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+    });
+  }
+
+  window.addEventListener('load', () => {
+    gsap.to('#preloader', { opacity: 0, duration: 0.8, delay: 1.8, onComplete: () => document.getElementById('preloader').style.display = 'none' });
+    heroIntro();
+  });
+
+  function heroIntro() {
+    const tl = gsap.timeline({ delay: 2 });
+    tl.from('nav.top .brand, nav.top .cta', { y: -20, opacity: 0, duration: 0.8, stagger: 0.1, ease: 'power3.out' })
+      .from('#hero .hero-top > *', { y: 30, opacity: 0, duration: 0.9, ease: 'power3.out' }, '-=0.4')
+      .from('.hero-word', { y: '110%', opacity: 0, duration: 1.3, stagger: 0.2, ease: 'power4.out' }, '-=0.5')
+      .from('#hero .max-w-md > *', { y: 20, opacity: 0, duration: 0.7, stagger: 0.08, ease: 'power3.out' }, '-=0.5');
+  }
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.utils.toArray('.section h2.section h3').forEach(el => {
+    gsap.from(el, {
+      scrollTrigger: { trigger: el, start: 'top 88%' },
+      y: 40, opacity: 0, duration: 1, ease: 'power3.out'
+    });
+  });
+
+  gsap.utils.toArray('.section p.section .label').forEach(el => {
+    gsap.from(el, {
+      scrollTrigger: { trigger: el, start: 'top 92%' },
+      y: 15, opacity: 0, duration: 0.7, ease: 'power2.out'
+    });
+  });
+
+  gsap.utils.toArray('.frame').forEach((el, i) => {
+    gsap.from(el, {
+      scrollTrigger: { trigger: el, start: 'top 92%' },
+      y: 30, opacity: 0, duration: 0.9, delay: (i % 4) * 0.06, ease: 'power2.out'
+    });
+  });
+
+  gsap.utils.toArray('.card').forEach((el, i) => {
+    gsap.from(el, {
+      scrollTrigger: { trigger: el, start: 'top 92%' },
+      y: 20, opacity: 0, duration: 0.7, delay: (i % 3) * 0.08, ease: 'power2.out'
+    });
+  });
+
+  gsap.utils.toArray('.star').forEach((el, i) => {
+    gsap.from(el, {
+      scrollTrigger: { trigger: '#constellation', start: 'top 60%' },
+      scale: 0, opacity: 0, duration: 0.7, delay: i * 0.1, ease: 'back.out(1.6)'
+    });
+  });
+
+  gsap.utils.toArray('.parallax-img').forEach(img => {
+    gsap.to(img, {
+      yPercent: -10,
+      ease: 'none',
+      scrollTrigger: { trigger: img, start: 'top bottom', end: 'bottom top', scrub: true }
+    });
+  });
+
+  ScrollTrigger.create({
+    trigger: 'body',
+    start: 'top top',
+    end: 'bottom bottom',
+    onUpdate: (self) => { document.getElementById('progress').style.width = (self.progress * 100) + '%'; }
+  });
+
+  const moodBtns = document.querySelectorAll('.mood-btn');
+  const galleryTiles = document.querySelectorAll('#galleryGrid .gallery-tile');
+  moodBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      moodBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const mood = btn.dataset.mood;
+      galleryTiles.forEach(t => {
+        if (mood === 'all' || t.dataset.mood === mood) t.classList.remove('dim');
+        else t.classList.add('dim');
+      });
+    });
+  });
+
+  const facts = {
+    'silks-1': { label: 'ON THE SILKS', title: 'Weightless, on purpose.', body: 'I started aerial silks for strength. Stayed for the way the world looks upside down, softer, stranger, more forgiving. Silks and hoops, weekly.', tag: 'AERIAL · 01' },
+    'climb-1': { label: 'ON THE WALL', title: 'A vertical philosopher.', body: 'Bouldering is problem-solving with your body. Every route is a paragraph. Every fall is a footnote you learn from.', tag: 'CLIMB · 01' },
+    'loreal-1': { label: 'THE ANCHOR', title: 'Xtenso Care.', body: 'The one bottle that has been on my shelf for years. Pro-keratin, anti-frizz, and the smell of every wash-day since forever.', tag: 'L’ORÉAL · 01' },
+    'star-hair': { label: 'STAR · I', title: 'Hair.', body: 'The daily practice. The public signature. The private meditation. Curly, sleek, jasmine-tucked, every version, a chapter.', tag: 'CONSTELLATION · I' },
+    'star-aerial': { label: 'STAR · II', title: 'Aerial.', body: 'Silks & hoops. Where strength becomes softness, and the ground becomes optional.', tag: 'CONSTELLATION · II' },
+    'star-mind': { label: 'STAR · III', title: 'Mind.', body: 'Consumer behaviour. Behavioural science. The philosophy of choice. The permanent open tab.', tag: 'CONSTELLATION · III' },
+    'star-xlri': { label: 'STAR · IV', title: 'XLRI.', body: 'MBA in progress at XLRI Delhi. Where I trade code for consumer strategy, and love every day of it.', tag: 'CONSTELLATION · IV' },
+    'star-yoga': { label: 'STAR · V', title: 'Yoga.', body: 'The stillness practice. The counter-weight to everything else.', tag: 'CONSTELLATION · V' },
+    'star-climb': { label: 'STAR · VI', title: 'Climb.', body: 'Bouldering. A wall that will not move for me, so I move for it.', tag: 'CONSTELLATION · VI' },
+    'star-loreal': { label: 'STAR · VII', title: 'L’Oréal.', body: 'The brand my shelf never fires. Xtenso Care since day one. Absolut Repair on Sundays. Scalp Advanced when it counts.', tag: 'CONSTELLATION · VII' },
+  };
+
+  const modal = document.getElementById('factModal');
+  const factLabel = document.getElementById('factLabel');
+  const factTitle = document.getElementById('factTitle');
+  const factBody = document.getElementById('factBody');
+  const factTag = document.getElementById('factTag');
+
+  function openFact(key) {
+    const f = facts[key] || { label: 'FACT', title: 'A private detail', body: 'Add your own copy here.', tag: 'DIYA · SETHI' };
+    factLabel.textContent = f.label;
+    factTitle.textContent = f.title;
+    factBody.textContent = f.body;
+    factTag.textContent = f.tag;
+    modal.classList.add('open');
+    gsap.from('.fact-card', { y: 40, opacity: 0, duration: 0.5, ease: 'power3.out' });
+  }
+
+  // Legacy fact hotspot handler (only if any remain, safely no-op otherwise)
+  document.querySelectorAll('[data-fact]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openFact(el.dataset.fact);
+    });
+  });
+
+  // Star scroll: click star → smooth-scroll to matching section id
+  document.querySelectorAll('[data-scroll]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const targetId = el.dataset.scroll;
+      const target = document.getElementById(targetId);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  document.getElementById('factClose').addEventListener('click', () => modal.classList.remove('open'));
+  modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('open'); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') modal.classList.remove('open'); });
+
+  // Hero video sound: force play() on click (some browsers block audio autoplay entirely)
+  const heroVideo = document.getElementById('heroVideo');
+  const unmuteBtn = document.getElementById('unmuteBtn');
+  const unmuteText = document.getElementById('unmuteText');
+  const unmuteIcon = document.getElementById('unmuteIcon');
+  unmuteBtn.addEventListener('click', async () => {
+    if (heroVideo.muted) {
+      heroVideo.muted = false;
+      heroVideo.volume = 1;
+      try {
+        await heroVideo.play();
+      } catch (err) {
+        console.log('play() rejected', err);
+      }
+      unmuteText.textContent = 'MUTE';
+      unmuteIcon.innerHTML = '<path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/>';
+      unmuteBtn.style.animation = 'none';
+    } else {
+      heroVideo.muted = true;
+      unmuteText.textContent = 'TAP FOR SOUND';
+      unmuteIcon.innerHTML = '<path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>';
+      unmuteBtn.style.animation = 'soundpulse 2s ease-out infinite';
+    }
+  });
+</script>
+
+</body>
+</html>
